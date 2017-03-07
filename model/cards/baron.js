@@ -3,7 +3,7 @@ let _ = require("lodash");
 class Baron {
   constructor() {
     this.value = 3;
-    this.name = "Baron";
+    this.name = "baron";
   }
 
   play(player, opts) {

@@ -1,7 +1,7 @@
 class Priest {
   constructor() {
     this.value = 2;
-    this.name = "Priest";
+    this.name = "priest";
   }
 
   play(player, opts) {

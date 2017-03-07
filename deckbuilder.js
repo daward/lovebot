@@ -1,14 +1,15 @@
 let CardDeck = require("card-deck");
-let cardtypes = require("./model/cardtypes");
+let cardtypes = require("./definitions/cardtypes");
 let _ = require("lodash");
 
 module.exports = () => {
   // go through each card type definition
-  var cardInstances = _.map(cardtypes, cardtype => {
+  var cardInstances = _.map(cardtypes, (value, key) => {
     // drop a card in for each quantity
     var instances = [];
-    _.times(cardtype.quantity, num => {
-      var card = new cardtype.card();
+    _.times(value.quantity, num => {
+      let CardDefinition = require("./model/cards/" + key);
+      var card = new CardDefinition();
       card.id = num;
       instances.push(card);
     });

@@ -1,7 +1,7 @@
 class Countess {
   constructor() {
     this.value = 7;
-    this.name = "Countess";
+    this.name = "countess";
   }
 
   play() {

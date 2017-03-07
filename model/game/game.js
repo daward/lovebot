@@ -1,11 +1,11 @@
-let Player = require("./player");
+let Player = require("../player");
 let _ = require("lodash");
 
 class Game {
   constructor(players) {
     this.players = players;
     this.currentPlayerId = _.random(players.length - 1);
-    this.deck = require("../deckbuilder")();
+    this.deck = require("../../deckbuilder")();
   }
 
   deal() {

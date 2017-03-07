@@ -1,7 +1,7 @@
 class Guard {
   constructor() {
     this.value = 1;
-    this.name = "Guard";
+    this.name = "guard";
   }
 
   play(player, opts) {
