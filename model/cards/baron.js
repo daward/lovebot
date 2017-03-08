@@ -17,9 +17,11 @@ class Baron {
     var targetCard = this.opts.target.getHandCard();
     if (attackCard.value > targetCard.value) {
       this.result = "success";
+      this.losingCard = targetCard.name;
       this.opts.target.kill();
     } else if (attackCard.value < targetCard.value) {
       this.result = "fail";
+      this.losingCard = attackCard.name;
       player.kill();
     } else {
       this.result = "draw";

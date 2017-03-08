@@ -6,6 +6,10 @@ class Countess {
 
   play() {
   }
+
+  info(includePrivate) {
+    
+  }
 }
 
 module.exports = Countess;

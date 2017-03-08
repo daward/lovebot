@@ -23,12 +23,51 @@ class Player {
     }
   }
 
+  info(includePrivate) {
+    let retVal = {
+      protected: this.protected,
+      active: this.active,
+      plays: this.playInfo(includePrivate),
+      number: this.number
+    };
+    if (includePrivate) {
+      retVal.cards = _.map(this.cards, "name");
+    }
+    return retVal;
+  }
+
+  playInfo(includePrivate) {
+    let retVal = _.cloneDeep(this.plays);
+
+    // if we're omitting private information,
+    // then we have to delete all private results
+    if (!includePrivate) {
+      _.forEach(retVal, info => {
+        delete info.privateResult;
+      });
+    }
+    return retVal;
+  }
+
   play(opponents) {
     this.draw();
+    let opponentPublicInfo = _.map(opponents, opponent => opponent.info(false));
+    let playerInfo = this.info(true);
+    let targetFinder = options => {
+      if (options.target) {
+        options.target = _.find(opponents, opponent => opponent.number === options.target);
+      }
+      return options;
+    };
+
+    let cardFinder = playedCard => {
+      return _.find(this.cards, card => card.name === playedCard);
+    };
+
     this.strategy(
-      this,
-      opponents,
-      (playedCard, options) => this.applyCard(playedCard, options));
+      playerInfo,
+      opponentPublicInfo,
+      (playedCard, options) => this.applyCard(cardFinder(playedCard), targetFinder(options)));
   }
 
   isValidTarget() {
@@ -38,7 +77,7 @@ class Player {
   applyCard(playedCard, options) {
     // as soon as you play a card, whatever
     // protection had from a handmaid goes away
-    if(options && options.target && !options.target.isValidTarget()) {
+    if (options && options.target && !options.target.isValidTarget()) {
       throw new Error("Invalid target selected");
     }
     this.protected = false;

@@ -1,5 +1,6 @@
 let _ = require("lodash");
 let randomStatements = require("./randomstatements");
+let cardtypes = require("../definitions/cardtypes");
 
 module.exports = (player, opponents, callback) => {
 
@@ -17,6 +18,10 @@ module.exports = (player, opponents, callback) => {
     return opts;
   };
 
-  let selected = randomStatements.randPlay(player);
-  callback(selected.name, cardParameters(selected));
+  if (_.includes(player.cards, "handmaid")) {
+    callback("handmaid", cardParameters(cardtypes.handmaid));
+  } else {
+    let selected = _.sample(_.filter(player.cards, card => card !== "princess"));
+    callback(selected, cardParameters(cardtypes[selected]));
+  }
 };

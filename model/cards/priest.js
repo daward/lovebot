@@ -11,7 +11,7 @@ class Priest {
     if (!this.opts.target) {
       return;
     }
-    this.result = opts.target.getHandCard();
+    this.privateResult = opts.target.getHandCard();
   }
 }
 
