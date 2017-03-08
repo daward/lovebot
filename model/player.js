@@ -64,10 +64,8 @@ class Player {
       return _.find(this.cards, card => card.name === playedCard);
     };
 
-    this.strategy(
-      playerInfo,
-      opponentPublicInfo,
-      (playedCard, options) => this.applyCard(cardFinder(playedCard), targetFinder(options)));
+    return this.strategy(playerInfo, opponentPublicInfo)
+      .then(move => this.applyCard(cardFinder(move.selected), targetFinder(move.cardParameters)));
   }
 
   isValidTarget() {

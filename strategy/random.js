@@ -1,7 +1,7 @@
 let _ = require("lodash");
 let randomStatements = require("./randomstatements");
 
-module.exports = (player, opponents, callback) => {
+module.exports = (player, opponents) => {
 
   // if the card requires information from the player to be played, do so here
   var cardParameters = (cardType) => {
@@ -18,5 +18,5 @@ module.exports = (player, opponents, callback) => {
   };
 
   let selected = randomStatements.randPlay(player);
-  callback(selected.name, cardParameters(selected));
+  return Promise.resolve({ selected: selected.name, cardParameters: cardParameters(selected) });
 };

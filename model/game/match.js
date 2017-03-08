@@ -9,13 +9,19 @@ class Match {
   }
 
   play() {
-    do {
-      let currentGame = new Game(this.players);
-      currentGame.play();
-      this.games.push(currentGame);
-    } while(!this.winner());
+    this.currentGame = new Game(this.players);
+    return this.keepPlayingUntilWinner(this.currentGame.play());
   }
 
+  keepPlayingUntilWinner(gamePromise) {
+    return gamePromise.then(() => {
+      this.games.push(this.currentGame);
+      if (!this.winner()) {
+        this.currentGame = new Game(this.players);
+        return this.keepPlayingUntilWinner(this.currentGame.play());
+      }
+    });
+  }
   winner() {
     let matchCounts = _.countBy(this.games, game => game.winner.number);
     return _.findKey(matchCounts, winCount => winCount >= this.matchSize);
