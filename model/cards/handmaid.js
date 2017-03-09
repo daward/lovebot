@@ -7,6 +7,13 @@ class Handmaid {
   play(player) {
     player.protected = true;
   }
+
+  info() {
+    return {
+      name: this.name,
+      value: this.value
+    };
+  }
 }
 
 module.exports = Handmaid;

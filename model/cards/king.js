@@ -1,3 +1,5 @@
+let _ = require("lodash");
+
 class King {
   constructor() {
     this.value = 6;
@@ -10,6 +12,14 @@ class King {
       return;
     }
     player.swapHand(opts.target);
+  }
+
+  info(includePrivate) {
+    return {
+      name: this.name,
+      value: this.value,
+      target: _.get(this, "opts.target.number")
+    };
   }
 }
 

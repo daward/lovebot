@@ -1,5 +1,5 @@
 let CardDeck = require("card-deck");
-let cardtypes = require("./definitions/cardtypes");
+let cardtypes = require("lovebotplayer").cardtypes;
 let _ = require("lodash");
 
 module.exports = () => {

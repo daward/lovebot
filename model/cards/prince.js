@@ -1,3 +1,5 @@
+let _ = require("lodash");
+
 class Prince {
   constructor() {
     this.value = 5;
@@ -11,6 +13,14 @@ class Prince {
     } else {
       this.opts.target.dropHand();
     }
+  }
+
+  info() {
+    return {
+      name: this.name,
+      value: this.value,
+      target: _.get(this, "opts.target.number")
+    };
   }
 }
 
