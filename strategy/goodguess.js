@@ -3,17 +3,17 @@ let cardsLeft = require("./cardsremaining");
 let cardtypes = require("../definitions/cardtypes");
 let randomStatements = require("./randomstatements");
 
-module.exports = (player, opponents, callback) => {
+module.exports = (player, opponents) => {
 
-  var selected = _.sample(_.filter(player.cards, card => card !== "princess"));
+  let selected = _.sample(_.filter(player.cards, card => card !== "princess"));
 
   let randCardGuess = () => {
     let choices = cardsLeft(opponents, player);
     return _.sample(_.filter(choices, type => type !== "guard"));
   };
 
-  var cardParameters = (cardType) => {
-    var opts = {};
+  let cardParameters = (cardType) => {
+    let opts = {};
     if (_.includes(cardType.fields, "target")) {
       opts.target = randomStatements.randOpponent(opponents, player);
     }
@@ -25,5 +25,5 @@ module.exports = (player, opponents, callback) => {
     return opts;
   };
 
-  callback(selected, cardParameters(cardtypes[selected]));
+  return Promise.resolve({ selected, cardParameters: cardParameters(cardtypes[selected]) });
 };

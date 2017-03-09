@@ -10,11 +10,13 @@ class Game {
 
   deal() {
     _.forEach(this.players, player => player.startGame(this.deck));
+    // This might end up being an API call, so lets keep it promisy
+    return Promise.resolve();
   }
 
   playRound() {
-    this.currentPlayer().play(this.opponents());
-    this.goToNextPlayer();
+    return this.currentPlayer().play(this.opponents())
+      .then (() => this.goToNextPlayer());
   }
 
   opponents() {
@@ -34,14 +36,15 @@ class Game {
   }
 
   play() {
-    this.deal();
-    let winner;
+    return this.deal().then(() => this.keepPlayingUntilWinner(this.playRound()));
+  }
 
-    // while there are cards and players remain, keep playing
-    while (!(winner = this.declareWinner())) {
-      this.playRound();
-    }
-    this.winner = winner;
+  keepPlayingUntilWinner(roundResult) {
+    return roundResult.then(() => {
+      if (!(this.winner = this.declareWinner())) {
+        return this.keepPlayingUntilWinner(this.playRound());
+      }
+    })
   }
 
   declareWinner(deck) {
