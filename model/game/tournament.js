@@ -27,15 +27,22 @@ class Tournament {
   }
 
   report() {
-    let report = _.map(_.groupBy(this.listWinners()), (value, key) => {
+    let standings = _.map(_.groupBy(this.listWinners()), (value, key) => {
       return { playerId: key, matchWinPct: value.length / this.numberOfMatches, matchesWon: value.length };
     });
 
-    report = _.sortBy(report, p => p.matchWinPct * -1);
+    standings = _.sortBy(standings, p => p.matchWinPct * -1);
+    let place = 1;
+    _.each(standings, p => p.place = place++);
 
-    return _.concat(
-      [{ matches: this.matches.length, gamesPerMatch: this.gamesPerMatch, totalGames: this.gamesPerMatch * this.matches.length }],
-      report);
+    return {
+      gameParameters: {
+        numberOfMatches: this.matches.length,
+        gamesPerMatch: this.gamesPerMatch,
+        totalGames: this.gamesPerMatch * this.matches.length
+      },
+      standings: standings
+    }
   }
 }
 
