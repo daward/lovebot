@@ -59,7 +59,9 @@ class Player {
     };
 
     return this.strategy(playerInfo, opponentPublicInfo)
-      .then(move => this.applyCard(cardFinder(move.selected), targetFinder(move.cardParameters)));
+      .then(move => {
+        return this.applyCard(cardFinder(move.selected), targetFinder(move.cardParameters))
+      });
   }
 
   isValidTarget() {
