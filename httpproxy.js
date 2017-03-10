@@ -1,4 +1,4 @@
-let rp = require('request-promise')
+let rp = require('request-promise');
 
 class HttpProxyStrategy {
   constructor(uri) {
@@ -6,14 +6,14 @@ class HttpProxyStrategy {
   }
 
   strategy(player, opponents) {
-      return rp({
-          uri: this.uri,
-          method: "POST",
-          json: true,
-          body: { player, opponents }
-      });
+    return rp({
+      uri: this.uri,
+      method: "POST",
+      json: true,
+      body: { player, opponents }
+    });
   }
-}
+};
 
 
 module.exports = HttpProxyStrategy;
