@@ -1,9 +1,8 @@
 let _ = require("lodash");
-let P = require("bluebird");
 let lovebotPlayer = require("lovebotplayer");
 let Tournament = require('./model/game/tournament');
 let HttpProxyStrategy = require('./httpproxy');
-let rando = (p, o) => P.resolve(lovebotPlayer.random(p, o));
+let rando = (p, o) => Promise.resolve(lovebotPlayer.random(p, o));
 
 lovebotPlayer.start({ enableLogging: true });
 var httpStrategy = new HttpProxyStrategy("http://localhost:8080/api/strategies/0");
