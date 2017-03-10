@@ -1,7 +1,18 @@
+let _ = require("lodash");
+
 class Guard {
   constructor() {
     this.value = 1;
     this.name = "guard";
+  }
+
+  info() {
+    return {
+      name: this.name,
+      value: this.value,
+      guess: _.get(this, "opts.guess"),
+      target: _.get(this, "opts.target.number")
+    };
   }
 
   play(player, opts) {
@@ -9,10 +20,10 @@ class Guard {
 
     // nobody targetted, presumably because there was nobody to target
     // (should be validated)
-    if(!this.opts.target) {
+    if (!this.opts.target) {
       return;
     }
-    if(this.opts.target.cards[0].name === this.opts.guess) {
+    if (this.opts.target.cards[0].name === this.opts.guess) {
       this.opts.target.kill();
     }
   }

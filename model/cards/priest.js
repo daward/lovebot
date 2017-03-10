@@ -1,3 +1,5 @@
+let _ = require("lodash");
+
 class Priest {
   constructor() {
     this.value = 2;
@@ -12,6 +14,20 @@ class Priest {
       return;
     }
     this.privateResult = opts.target.getHandCard();
+  }
+
+  info(includePrivate) {
+    let retVal = {
+      name: this.name,
+      value: this.value,
+      target: _.get(this, "opts.target.number")
+    };
+
+    if(includePrivate) {
+      retVal.result = this.privateResult;
+    }
+
+    return retVal;
   }
 }
 

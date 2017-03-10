@@ -37,16 +37,10 @@ class Player {
   }
 
   playInfo(includePrivate) {
-    let retVal = _.cloneDeep(this.plays);
-
+    
     // if we're omitting private information,
     // then we have to delete all private results
-    if (!includePrivate) {
-      _.forEach(retVal, info => {
-        delete info.privateResult;
-      });
-    }
-    return retVal;
+    return _.map(this.plays, play => play.info(includePrivate));
   }
 
   play(opponents) {

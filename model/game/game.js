@@ -16,7 +16,7 @@ class Game {
 
   playRound() {
     return this.currentPlayer().play(this.opponents())
-      .then (() => this.goToNextPlayer());
+      .then(() => this.goToNextPlayer());
   }
 
   opponents() {

@@ -34,7 +34,7 @@ class Tournament {
     report = _.sortBy(report, p => p.matchWinPct * -1);
 
     return _.concat(
-      [{matches: this.matches.length, gamesPerMatch: this.gamesPerMatch, totalGames: this.gamesPerMatch * this.matches.length}],
+      [{ matches: this.matches.length, gamesPerMatch: this.gamesPerMatch, totalGames: this.gamesPerMatch * this.matches.length }],
       report);
   }
 }

@@ -6,6 +6,16 @@ class Baron {
     this.name = "baron";
   }
 
+  info() {
+    return {
+      name: this.name,
+      value: this.value,
+      losingCard: this.losingCard,
+      result: this.result,
+      target: _.get(this, "opts.target.number")
+    };
+  }
+
   play(player, opts) {
     this.opts = opts;
     // nobody targetted, presumably because there was nobody to target

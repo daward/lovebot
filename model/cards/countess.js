@@ -4,11 +4,14 @@ class Countess {
     this.name = "countess";
   }
 
-  play() {
+  info() {
+    return {
+      name: this.name,
+      value: this.value
+    };
   }
 
-  info(includePrivate) {
-    
+  play() {
   }
 }
 
