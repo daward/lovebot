@@ -1,22 +1,26 @@
-let _ = require("lodash");
 let lovebotPlayer = require("lovebotplayer");
 let Tournament = require('./model/game/tournament');
-let HttpProxyStrategy = require('./httpproxy');
 
-lovebotPlayer.playerapi.start(true);
-var httpStrategy = new HttpProxyStrategy("http://localhost:8080/api/takeTurn");
+// This file is essentially for testing now, I think the API shoudl be easier to use
+// when testing an AI API. 
 
 let strategies = [
-  { name: 'goodguess-http', strategy: (player, opponents) => httpStrategy.strategy(player, opponents) },
-  { name: 'random1', strategy: lovebotPlayer.random },
-  { name: 'random2', strategy: lovebotPlayer.random },
-  { name: 'random3', strategy: lovebotPlayer.random }
+  { name: "Good Guess", strategy: promisify(lovebotPlayer.goodguess) },
+  { name: "No Princess", strategy: promisify(lovebotPlayer.noprincess) },
+  { name: "Random 1", strategy: promisify(lovebotPlayer.random) },
+  { name: "Random 2", strategy: promisify(lovebotPlayer.random) }
 ];
 
-let tournament = new Tournament(strategies, 50, 4);
+let numberOfMatches = 300;
+let gamesPerMatch = 4;
+let tournament = new Tournament(strategies, numberOfMatches, gamesPerMatch);
 
 tournament.play().then(() => {
   let report = tournament.report();
   console.log(report);
   process.exit();
 });
+
+function promisify(strategy) {
+  return (player, opponent) => Promise.resolve(strategy(player, opponent));
+}
