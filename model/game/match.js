@@ -23,7 +23,7 @@ class Match {
     });
   }
   winner() {
-    let matchCounts = _.countBy(this.games, game => game.winner.number);
+    let matchCounts = _.countBy(this.games, game => game.winner.id);
     return _.findKey(matchCounts, winCount => winCount >= this.matchSize);
   }
 }

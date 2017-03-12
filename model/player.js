@@ -1,9 +1,9 @@
 let _ = require('lodash');
 
 class Player {
-  constructor(number, strategy) {
+  constructor(id, strategy) {
     this.strategy = strategy;
-    this.number = number;
+    this.id = id;
   }
 
   startGame(deck) {
@@ -28,16 +28,22 @@ class Player {
       protected: this.protected,
       active: this.active,
       plays: this.playInfo(includePrivate),
-      number: this.number
+      id: this.id
     };
     if (includePrivate) {
-      retVal.cards = _.map(this.cards, "name");
+      retVal.cards = _.map(this.cards, card => {
+        let cardRetVal = { name: card.name };
+        if (card.source) {
+          cardRetVal.source = card.source;
+        }
+        return cardRetVal;
+      });
     }
     return retVal;
   }
 
   playInfo(includePrivate) {
-    
+
     // if we're omitting private information,
     // then we have to delete all private results
     return _.map(this.plays, play => play.info(includePrivate));
@@ -49,7 +55,7 @@ class Player {
     let playerInfo = this.info(true);
     let targetFinder = options => {
       if (options.target) {
-        options.target = _.find(opponents, opponent => opponent.number === options.target);
+        options.target = _.find(opponents, opponent => opponent.id === options.target);
       }
       return options;
     };
@@ -72,6 +78,10 @@ class Player {
     if (options && options.target && !options.target.isValidTarget()) {
       throw new Error("Invalid target selected");
     }
+
+    // if the card came from a king swap, that's not public information
+    // and should not be part of the "play"
+    delete playedCard.source;
     this.protected = false;
     _.remove(this.cards, playedCard);
     playedCard.play(this, options);
@@ -98,7 +108,9 @@ class Player {
 
   swapHand(opponent) {
     var myCard = this.getHandCard();
+    myCard.source = this.id;
     var theirCard = opponent.getHandCard();
+    theirCard.source = opponent.id;
     opponent.cards = [myCard];
     this.cards = [theirCard];
   }

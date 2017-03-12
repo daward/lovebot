@@ -39,7 +39,7 @@ class Tournament {
       gameParameters: {
         numberOfMatches: this.matches.length,
         gamesPerMatch: this.gamesPerMatch,
-        totalGames: this.gamesPerMatch * this.matches.length
+        totalGames: _.sumBy(this.matches, match => match.games.length)
       },
       standings: standings
     }

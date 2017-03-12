@@ -12,7 +12,7 @@ class Baron {
       value: this.value,
       losingCard: this.losingCard,
       result: this.result,
-      target: _.get(this, "opts.target.number")
+      target: _.get(this, "opts.target.id")
     };
   }
 

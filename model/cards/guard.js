@@ -11,7 +11,7 @@ class Guard {
       name: this.name,
       value: this.value,
       guess: _.get(this, "opts.guess"),
-      target: _.get(this, "opts.target.number")
+      target: _.get(this, "opts.target.id")
     };
   }
 
