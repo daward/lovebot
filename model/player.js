@@ -78,6 +78,10 @@ class Player {
     if (options && options.target && !options.target.isValidTarget()) {
       throw new Error("Invalid target selected");
     }
+
+    // if the card came from a king swap, that's not public information
+    // and should not be part of the "play"
+    delete playedCard.source;
     this.protected = false;
     _.remove(this.cards, playedCard);
     playedCard.play(this, options);
