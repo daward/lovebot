@@ -18,7 +18,7 @@ class King {
     return {
       name: this.name,
       value: this.value,
-      target: _.get(this, "opts.target.number")
+      target: _.get(this, "opts.target.id")
     };
   }
 }
