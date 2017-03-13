@@ -1,15 +1,15 @@
-let runner = require('../gamerunner');
+let runner = require('../tournamentrunner');
 
-module.exports = {
-  runGame: runGame
-};
-
-function runGame(req, res, next) {
+let runTournament = (req, res, next) => {
   // Set default values for the non-required properties
   let bodyParam = req.swagger.params.body;
   let body = bodyParam.value;
   body.numberOfMatches = body.numberOfMatches || bodyParam.schema.schema.properties.numberOfMatches.default;
   body.gamesPerMatch = body.gamesPerMatch || bodyParam.schema.schema.properties.gamesPerMatch.default;
 
-  runner.runGame(body).then(response => res.json(response));
+  runner(body).then(response => res.json(response));
 }
+
+module.exports = {
+  runTournament: runTournament
+};
