@@ -4,6 +4,8 @@ let Tournament = require('./model/game/tournament');
 // This file is essentially for testing now, I think the API shoudl be easier to use
 // when testing an AI API. 
 
+let promisify = strategy => (player, opponent) => Promise.resolve(strategy(player, opponent));
+
 let strategies = [
   { name: "Good Guess", strategy: promisify(lovebotPlayer.goodguess) },
   { name: "No Princess", strategy: promisify(lovebotPlayer.noprincess) },
@@ -21,6 +23,4 @@ tournament.play().then(() => {
   process.exit();
 });
 
-function promisify(strategy) {
-  return (player, opponent) => Promise.resolve(strategy(player, opponent));
-}
+

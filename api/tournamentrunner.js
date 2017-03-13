@@ -3,24 +3,9 @@ let lovebotPlayer = require("lovebotplayer");
 let Tournament = require('../model/game/tournament');
 let HttpProxyStrategy = require('../httpproxy');
 
-// Called by the gamerunner api controller
-module.exports = {
-  runGame: runGame
-};
-
-function runGame(request) {
-  let strategies = createStrategies(request.players);
-  let tournament = new Tournament(strategies, request.numberOfMatches, request.gamesPerMatch);
-
-  return tournament.play().then(() => {
-    let report = tournament.report();
-    return report;
-  });
-}
-
 // Given the "players" specified by the requrest to run a game,
 // create the strategies array needed for the tournament class.
-function createStrategies(players) {
+let createStrategies = players => {
   let strats = [];
 
   _.each(players, p => {
@@ -39,4 +24,14 @@ function createStrategies(players) {
   });
 
   return strats;
+}
+
+module.exports = request => {
+  let strategies = createStrategies(request.players);
+  let tournament = new Tournament(strategies, request.numberOfMatches, request.gamesPerMatch);
+
+  return tournament.play().then(() => {
+    let report = tournament.report();
+    return report;
+  });
 }
