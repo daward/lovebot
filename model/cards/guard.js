@@ -11,7 +11,8 @@ class Guard {
       name: this.name,
       value: this.value,
       guess: _.get(this, "opts.guess"),
-      target: _.get(this, "opts.target.id")
+      target: _.get(this, "opts.target.id"),
+      result: this.result
     };
   }
 
@@ -25,6 +26,9 @@ class Guard {
     }
     if (this.opts.target.cards[0].name === this.opts.guess) {
       this.opts.target.kill();
+      this.result = "success";
+    } else {
+      this.result = "fail";
     }
   }
 }

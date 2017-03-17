@@ -72,7 +72,7 @@ paths:
               default: 25
             gamesPerMatch:
               type: integer
-              default: 2
+              default: 4
       responses:
         '200':
           description: Successful request.

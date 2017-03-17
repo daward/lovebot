@@ -9,11 +9,6 @@ let lovebotPlayer = require('lovebotplayer');
 let port = process.env.PORT || 3333;
 let playerApiPort = port - 1;
 
-lovebotPlayer.start({
-  enableLogging: true,
-  port: playerApiPort
-});
-
 let app = express();
 
 let swaggerPath = path.join(__dirname, 'swagger.yaml');

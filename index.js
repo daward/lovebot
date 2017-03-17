@@ -1,6 +1,7 @@
 let lovebotPlayer = require("lovebotplayer");
 let Tournament = require('./model/game/tournament');
 
+let promisify = (player, opponent) => Promise.resolve(strategy(player, opponent));
 // This file is essentially for testing now, I think the API shoudl be easier to use
 // when testing an AI API. 
 
@@ -20,7 +21,3 @@ tournament.play().then(() => {
   console.log(report);
   process.exit();
 });
-
-function promisify(strategy) {
-  return (player, opponent) => Promise.resolve(strategy(player, opponent));
-}

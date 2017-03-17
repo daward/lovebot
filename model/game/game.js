@@ -6,10 +6,11 @@ class Game {
     this.players = players;
     this.currentPlayerId = _.random(players.length - 1);
     this.deck = require("../../deckbuilder")();
+    this.turn = 0;
   }
 
   deal() {
-    _.forEach(this.players, player => player.startGame(this.deck));
+    _.forEach(this.players, player => player.startGame(this.deck, () => this.turn++));
     // This might end up being an API call, so lets keep it promisy
     return Promise.resolve();
   }
@@ -28,6 +29,9 @@ class Game {
   goToNextPlayer() {
     do {
       this.currentPlayerId = (this.currentPlayerId + 1) % this.players.length;
+      if(this.currentPlayer().active) {
+        console.log(this.currentPlayerId);
+      }
     } while (!this.currentPlayer().active);
   }
 
