@@ -29,9 +29,6 @@ class Game {
   goToNextPlayer() {
     do {
       this.currentPlayerId = (this.currentPlayerId + 1) % this.players.length;
-      if(this.currentPlayer().active) {
-        console.log(this.currentPlayerId);
-      }
     } while (!this.currentPlayer().active);
   }
 
