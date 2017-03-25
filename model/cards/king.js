@@ -11,15 +11,24 @@ class King {
     if (!this.opts.target) {
       return;
     }
+    this.playerCard = player.getHandCard();
+    this.targetCard = opts.target.getHandCard();
     player.swapHand(opts.target);
   }
 
-  info(includePrivate) {
-    return {
+  info(includePrivate, playerId) {
+    let retVal =  {
       name: this.name,
       value: this.value,
       target: _.get(this, "opts.target.id")
     };
+
+    if(includePrivate || playerId === _.get(this, "opts.target.id")) {
+      retVal.targetCard = _.get(this, "targetCard.name");
+      retVal.playerCard = _.get(this, "playerCard.name");
+    }
+
+    return retVal;
   }
 }
 

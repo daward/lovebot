@@ -44,8 +44,10 @@ class Game {
     return roundResult.then(() => {
       if (!(this.winner = this.declareWinner())) {
         return this.keepPlayingUntilWinner(this.playRound());
+      } else {
+        this.winner.wins++;
       }
-    })
+    });
   }
 
   declareWinner(deck) {

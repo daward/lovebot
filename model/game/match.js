@@ -1,11 +1,13 @@
-let Game = require("./game");
-let _ = require("lodash");
+const Game = require("./game");
+const _ = require("lodash");
+const Player = require('../player');
 
 class Match {
-  constructor(players, matchSize) {
-    this.players = players;
+  constructor(strategies, matchSize) {
+    this.strategies = _.shuffle(strategies);
     this.games = [];
     this.matchSize = matchSize;
+    this.players = _.map(this.strategies, strategy => new Player(strategy.name, strategy.strategy));
   }
 
   play() {
