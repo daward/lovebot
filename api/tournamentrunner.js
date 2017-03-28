@@ -17,9 +17,13 @@ let createStrategies = players => {
       }
       let proxy = new HttpProxyStrategy(p.strategyUri);
       strat.strategy = (a, b) => proxy.strategy(a, b);
+      strat.url = p.strategyUri;
+      strat.uniqueId = p.strategyUri;
     } else {
       strat.strategy = (a, b) => Promise.resolve(lovebotPlayer[p.aiType](a, b));
+      strat.uniqueId = p.aiType;
     }
+    strat.aiType = p.aiType;
     strats.push(strat);
   });
 

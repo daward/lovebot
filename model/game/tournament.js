@@ -1,5 +1,6 @@
 let Match = require("./match");
 let _ = require("lodash");
+const P = require("bluebird");
 
 class Tournament {
   constructor(strategies, numberOfMatches, gamesPerMatch) {
@@ -11,7 +12,7 @@ class Tournament {
   }
 
   play() {
-    let promise = Promise.resolve();
+    let promise = P.resolve();
     _.times(this.numberOfMatches, () => this.matches.push(new Match(this.strategies, this.gamesPerMatch)));
 
     // I think if we deep-clone the players once it would allow for doing this concurrently,
@@ -21,12 +22,25 @@ class Tournament {
   }
 
   listWinners() {
-    return _.map(this.matches, match => match.winner());
+    return _.map(this.matches, match => {
+      let winnerId = match.winner();
+      return _.find(match.players, player => player.id === winnerId);
+    });
   }
 
   report() {
-    let standings = _.map(_.groupBy(this.listWinners()), (value, key) => {
-      return { playerId: key, matchWinPct: value.length / this.numberOfMatches, matchesWon: value.length };
+    let winners = _.map(this.listWinners(), winner => JSON.stringify({
+      name: winner.id,
+      type: winner.uniqueId
+    }));
+    let standings = _.map(_.groupBy(winners), (value, key) => {
+      let data = JSON.parse(key);
+      return { 
+        playerId: data.name,
+        playerType: data.type, 
+        matchWinPct: value.length / this.numberOfMatches, 
+        matchesWon: value.length 
+      };
     });
 
     standings = _.sortBy(standings, p => p.matchWinPct * -1);

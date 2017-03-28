@@ -8,10 +8,9 @@ let runTournament = (req, res, next) => {
   body.numberOfMatches = body.numberOfMatches || bodyParam.schema.schema.properties.numberOfMatches.default;
   body.gamesPerMatch = body.gamesPerMatch || bodyParam.schema.schema.properties.gamesPerMatch.default;
 
-  console.log("Game in progress:" + JSON.stringify(body));
   runner(body)
-    .then(response => res.json(response))
-    .then(() => console.log("game complete"))
+    .tap(response => res.json(response))
+    .tap(response => console.log(response))
     .catch(err => next(err));
 };
 

@@ -2,9 +2,10 @@ let _ = require('lodash');
 let cardtypes = require("lovebotplayer").cardtypes;
 
 class Player {
-  constructor(id, strategy) {
-    this.strategy = strategy;
-    this.id = id;
+  constructor(strategy) {
+    this.strategy = strategy.strategy;
+    this.id = strategy.name;
+    this.uniqueId = strategy.uniqueId;
     this.wins = 0;
   }
 
