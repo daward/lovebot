@@ -2,9 +2,11 @@ let _ = require('lodash');
 let cardtypes = require("lovebotplayer").cardtypes;
 
 class Player {
-  constructor(id, strategy) {
-    this.strategy = strategy;
-    this.id = id;
+  constructor(strategy) {
+    this.strategy = strategy.strategy;
+    this.id = strategy.name;
+    this.uniqueId = strategy.uniqueId;
+    this.wins = 0;
   }
 
   startGame(deck, counter) {
@@ -25,12 +27,13 @@ class Player {
     }
   }
 
-  info(includePrivate) {
+  info(includePrivate, viewerId) {
     let retVal = {
       protected: this.protected,
       active: this.active,
-      plays: this.playInfo(includePrivate),
-      id: this.id
+      plays: this.playInfo(includePrivate, viewerId),
+      id: this.id,
+      wins: this.wins
     };
     if (includePrivate) {
       retVal.cards = _.map(this.cards, card => {
@@ -44,12 +47,12 @@ class Player {
     return retVal;
   }
 
-  playInfo(includePrivate) {
+  playInfo(includePrivate, viewerId) {
 
     // if we're omitting private information,
     // then we have to delete all private results
     return _.map(this.plays, play => {
-      let retVal = play.info(includePrivate);
+      let retVal = play.info(includePrivate, viewerId);
       retVal.turn = play.turn;
       return retVal;
     });
@@ -57,8 +60,8 @@ class Player {
 
   play(opponents) {
     this.draw();
-    let opponentPublicInfo = _.map(opponents, opponent => opponent.info(false));
-    let playerInfo = this.info(true);
+    let opponentPublicInfo = _.map(opponents, opponent => opponent.info(false, this.id));
+    let playerInfo = this.info(true, this.id);
 
     // turns the identifier provided by the strategy back into an object
     // representing a card that that player actually holds

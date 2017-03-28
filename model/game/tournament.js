@@ -1,20 +1,19 @@
-let Player = require('../player');
 let Match = require("./match");
 let _ = require("lodash");
+const P = require("bluebird");
 
 class Tournament {
   constructor(strategies, numberOfMatches, gamesPerMatch) {
     this.strategies = strategies;
     let num = 0;
-    this.players = _.map(strategies, strategy => new Player(strategy.name, strategy.strategy));
     this.numberOfMatches = numberOfMatches;
     this.gamesPerMatch = gamesPerMatch;
     this.matches = [];
   }
 
   play() {
-    let promise = Promise.resolve();
-    _.times(this.numberOfMatches, () => this.matches.push(new Match(this.players, this.gamesPerMatch)));
+    let promise = P.resolve();
+    _.times(this.numberOfMatches, () => this.matches.push(new Match(this.strategies, this.gamesPerMatch)));
 
     // I think if we deep-clone the players once it would allow for doing this concurrently,
     // and I could used Promise.all([promises]) to wait for them, but for now chain the promises.
@@ -23,12 +22,25 @@ class Tournament {
   }
 
   listWinners() {
-    return _.map(this.matches, match => match.winner());
+    return _.map(this.matches, match => {
+      let winnerId = match.winner();
+      return _.find(match.players, player => player.id === winnerId);
+    });
   }
 
   report() {
-    let standings = _.map(_.groupBy(this.listWinners()), (value, key) => {
-      return { playerId: key, matchWinPct: value.length / this.numberOfMatches, matchesWon: value.length };
+    let winners = _.map(this.listWinners(), winner => JSON.stringify({
+      name: winner.id,
+      type: winner.uniqueId
+    }));
+    let standings = _.map(_.groupBy(winners), (value, key) => {
+      let data = JSON.parse(key);
+      return { 
+        playerId: data.name,
+        playerType: data.type, 
+        matchWinPct: value.length / this.numberOfMatches, 
+        matchesWon: value.length 
+      };
     });
 
     standings = _.sortBy(standings, p => p.matchWinPct * -1);
